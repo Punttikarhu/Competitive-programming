@@ -22,64 +22,33 @@ arr is sorted in ascending order.
 
 #include <bits/stdc++.h>
 using namespace std;
-#define ll long long
-
-vector<int>::iterator closerToX(vector<int>::iterator it1, vector<int>::iterator it2, int x) {
-    int dist_a = abs(*it1-x);
-    int dist_b = abs(*it2-x);
-    if (dist_a  < dist_b) return it1;
-    else if (*it1 < *it2 && dist_a == dist_b) return it1;
-    return it2;
-}
 
 vector<int> findClosestElements(vector<int> arr, int k, int x) {
-    printf("arr: ");
-    for (auto x : arr) printf("%i,", x);
-    printf("\nk: %i\n", k);
-    printf("x: %i\n", x);
 
     vector<int> result;
+    
+    deque<pair<int, int>> d;
 
-    auto it = find(arr.begin(), arr.end(), x);
+    for (auto e : arr) d.push_back({abs(e-x), e});
 
-    vector<int>::iterator it1, it2;
-  
-    if (it != arr.end()) // x is in arr 
+    sort(d.begin(), d.end());
+
+
+    while (k--)
     {
-        //i = it - arr.begin();
-        result.push_back(*it);
-
-        it1 = prev(it, 1);
-        it2 = next(it, 1);
-
-    } 
-
-    for (int i = 0; i < k-1; i++)
-    {
-        if (closerToX(it1, it2, x) == it1) {
-            result.push_back(*it1);
-            it1 = prev(it1, 1);
-        } else {
-            result.push_back(*it2);
-            it2 = next(it2, 1);
-        }
-
+        result.push_back(d.front().second);
+        d.pop_front();
     }
-
     sort(result.begin(), result.end());
-    return result;
+    return result;    
 }
-
-
 
 int main() {
-    ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
-
-    vector<int> arr = {1,2,3,4,5};
+    vector<int> v = {1,-2,-3,-4,5, 23, -5};
     int k = 4;
     int x = 3;
-    vector<int> result = findClosestElements(arr, k, x);
-    printf("result: ");
-    for (auto x : result) printf("%i,", x);
+    auto r = findClosestElements(v,k,x);
 
+    for (auto k : r) cout << k << endl;
 }
+
